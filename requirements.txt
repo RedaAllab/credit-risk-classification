@@ -6,3 +6,4 @@ scikit-learn==1.6.1
 xgboost==3.2.0
 jupyter==1.1.1
 pytest==8.3.4
+shap==0.52.0

@@ -34,12 +34,16 @@ With defaults at only ~22% of the test set, ROC-AUC alone can be optimistic abou
 
 ![Precision-Recall curves](assets/precision_recall.png)
 
+XGBoost is the model we'd deploy, but as a boosted tree ensemble it isn't natively interpretable. SHAP values attribute each prediction to individual feature contributions, showing not just which features matter but in which direction:
+
+![SHAP summary for XGBoost](assets/shap_summary.png)
+
 **Key takeaways**
 - XGBoost wins on every metric (ROC-AUC, F2-score, Average Precision), confirming a non-linear relationship between borrower features and default risk, and its advantage over Random Forest holds up under bootstrap resampling.
 - Logistic regression stays a solid, natively interpretable baseline (~0.86 ROC-AUC), useful where explainability is a hard requirement.
 - The FN/FP cost ratio (~6.7) justifies optimizing for recall on the default class even at the expense of more false positives; F2-score captures this trade-off directly.
-- `loan_grade`, `person_home_ownership`, and `loan_percent_income` are consistently the strongest predictors across models.
-- **Recommendation:** deploy XGBoost as the primary decision engine, paired with SHAP for explainability to satisfy GDPR Art. 22 / Basel III transparency requirements on internal credit models.
+- `loan_grade`, `person_income`, and `loan_percent_income` are the dominant drivers of XGBoost's predictions: a worse grade, lower income, or higher debt-to-income ratio all push predictions toward default, consistent with domain intuition.
+- **Recommendation:** deploy XGBoost as the primary decision engine, paired with SHAP for per-decision explanations to satisfy GDPR Art. 22 / Basel III transparency requirements on internal credit models.
 
 ---
 
@@ -79,6 +83,7 @@ The notebooks import their preprocessing steps from `src/preprocessing.py` rathe
 6. **Correlation & importance analysis**: feature correlation structure and per-model feature importance to sanity-check and explain the results.
 7. **Statistical robustness**: bootstrap confidence intervals on ROC-AUC and F2-score to check whether ranking differences between models are statistically meaningful.
 8. **Precision-Recall analysis**: PR curves and Average Precision, a metric less sensitive to class imbalance than ROC-AUC.
+9. **Explainability**: SHAP values for XGBoost, to attribute predictions to individual feature contributions.
 
 ## Setup
 
