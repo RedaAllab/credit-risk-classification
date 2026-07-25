@@ -27,7 +27,7 @@ An IV this high is normally a red flag for target leakage, but here it's explain
 
 | Model | ROC-AUC | F2-score | Default recall |
 |---|---|---|---|
-| Logistic Regression (L1) | 0.857 | 0.708 | 0.578 |
+| Logistic Regression (L1) | 0.857 | 0.709 | 0.577 |
 | Random Forest | 0.934 | 0.790 | 0.702 |
 | **XGBoost** | **0.950** | **0.820** | **0.727** |
 | MLP | 0.906 | 0.744 | 0.729 |
