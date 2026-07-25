@@ -4,10 +4,11 @@
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange)
 ![XGBoost](https://img.shields.io/badge/XGBoost-gradient%20boosting-green)
 ![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey)
+[![Live demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://credit-risk-classification-fprbidokieelrpbgryxzvz.streamlit.app/)
 
 Binary classification project predicting loan default on 32,581 observations from a real-world lending dataset. A logistic regression **champion** model is benchmarked against three **challengers** (Random Forest, XGBoost, MLP), with the decision threshold tuned via F2-score to reflect the asymmetric cost of missing a default.
 
-An interactive demo (see [Live demo](#live-demo) below) lets you fill in a loan application and get the XGBoost model's default probability, decision, and a per-applicant SHAP explanation.
+**[Try the live demo](https://credit-risk-classification-fprbidokieelrpbgryxzvz.streamlit.app/)**: fill in a loan application and get the XGBoost model's default probability, decision, and a per-applicant SHAP explanation.
 
 **Course project by:** Illian Hashatel, [Reda Allab](https://github.com/RedaAllab), Issa Ali Adoum
 **Course:** Data Science Software, M2 IRFA, Université Paris 1
@@ -105,6 +106,8 @@ The notebooks import their preprocessing steps from `src/preprocessing.py` rathe
 9. **Explainability**: SHAP values for XGBoost, to attribute predictions to individual feature contributions.
 
 ## Live demo
+
+**[credit-risk-classification-fprbidokieelrpbgryxzvz.streamlit.app](https://credit-risk-classification-fprbidokieelrpbgryxzvz.streamlit.app/)**
 
 `app/streamlit_app.py` is a small Streamlit app: fill in a loan application (age, income, loan amount, grade, etc.) and get the champion XGBoost model's default probability, its decision at the F2-optimized threshold, and a SHAP waterfall explaining that specific prediction.
 
