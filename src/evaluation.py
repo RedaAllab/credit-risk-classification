@@ -17,15 +17,15 @@ def find_best_f2_threshold(y_true, y_probs, n_thresholds: int = 200):
     return thresholds[best_idx], scores[best_idx]
 
 
-def plot_confusion_and_roc(y_true, y_pred, y_proba, model_name: str, cmap: str = "Blues"):
+def plot_confusion_and_roc(y_true, y_pred, y_proba, model_name: str, cmap="Blues", line_color=None):
     """Side-by-side confusion matrix and ROC curve for one model."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     ConfusionMatrixDisplay.from_predictions(y_true, y_pred, cmap=cmap, ax=axes[0])
     axes[0].set_title(f"Confusion matrix: {model_name}")
 
-    RocCurveDisplay.from_predictions(y_true, y_proba, ax=axes[1], name=model_name)
-    axes[1].plot([0, 1], [0, 1], "k--")
+    RocCurveDisplay.from_predictions(y_true, y_proba, ax=axes[1], name=model_name, color=line_color)
+    axes[1].plot([0, 1], [0, 1], linestyle="--", color="#c3c2b7")
     axes[1].set_title(f"ROC curve: {model_name}")
 
     fig.tight_layout()
