@@ -13,6 +13,16 @@ Binary classification project predicting loan default on 32,581 observations fro
 
 ---
 
+## EDA highlights
+
+Beyond distributions and missingness, the EDA ranks each feature's predictive power with Weight of Evidence / Information Value, a standard credit-scoring diagnostic. It flags `loan_grade`, `loan_percent_income`, and `loan_int_rate` as the strongest predictors (IV > 0.5), the same three features the modeling stage and SHAP later confirm as most important:
+
+![Information Value ranking](assets/information_value.png)
+
+An IV this high is normally a red flag for target leakage, but here it's explainable: `loan_grade` and `loan_int_rate` are underwriting fields set *at* origination to price risk, so they're legitimately available pre-outcome rather than proxies for it. The full notebook also covers formal significance testing (Mann-Whitney U, chi-square) and multicollinearity diagnostics (VIF) for every feature.
+
+---
+
 ## Results
 
 | Model | ROC-AUC | F2-score | Default recall |
@@ -75,7 +85,7 @@ The notebooks import their preprocessing steps from `src/preprocessing.py` rathe
 
 ## Methodology
 
-1. **EDA** (`notebooks/credit_risk_eda.ipynb`): distributions, missingness, outliers, target imbalance.
+1. **EDA** (`notebooks/credit_risk_eda.ipynb`): distributions, missingness, outliers, target imbalance, statistical significance testing (Mann-Whitney U, chi-square), multicollinearity (VIF), and Information Value ranking.
 2. **Preprocessing**: missingness indicators, categorical encoding, train/test split.
 3. **Champion model**: L1-regularized logistic regression, chosen for interpretability and its role as a scoring baseline.
 4. **Challengers**: Random Forest, XGBoost, and an MLP, compared on ROC-AUC and F2-score.
