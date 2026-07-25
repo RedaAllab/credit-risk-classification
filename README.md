@@ -17,8 +17,8 @@ Binary classification project predicting loan default on 32,581 observations fro
 | Model | ROC-AUC | F2-score | Default recall |
 |---|---|---|---|
 | Logistic Regression (L1) | 0.857 | 0.708 | 0.578 |
-| Random Forest | 0.935 | 0.793 | 0.728 |
-| **XGBoost** | **0.950** | **0.826** | **0.783** |
+| Random Forest | 0.934 | 0.790 | 0.702 |
+| **XGBoost** | **0.950** | **0.820** | **0.727** |
 | MLP | 0.906 | 0.744 | 0.729 |
 
 ![Model comparison: F2-score and ROC-AUC](assets/model_comparison.png)
@@ -41,13 +41,20 @@ Binary classification project predicting loan default on 32,581 observations fro
 ├── notebooks/
 │   ├── credit_risk_eda.ipynb            # Exploratory data analysis
 │   └── credit_risk_modeling_en.ipynb     # Preprocessing, modeling, evaluation
+├── src/
+│   └── preprocessing.py                 # Cleaning, encoding, train/test split logic
+├── tests/
+│   └── test_preprocessing.py            # Unit tests for src/preprocessing.py
 ├── reports/
 │   └── dss_report_en.pdf                # Full written report
 ├── data/
 │   └── credit_risk_dataset.csv          # Source dataset (Kaggle)
 ├── assets/                              # Figures used in this README
+├── .github/workflows/ci.yml             # Runs the test suite on every push/PR
 └── requirements.txt
 ```
+
+The notebooks import their preprocessing steps from `src/preprocessing.py` rather than duplicating the logic inline, so the cleaning/encoding pipeline is unit-tested (`pytest tests/`) and reusable outside the notebook.
 
 ---
 
@@ -69,5 +76,11 @@ pip install -r requirements.txt
 ```
 
 Run `notebooks/credit_risk_eda.ipynb` and `notebooks/credit_risk_modeling_en.ipynb` top to bottom (paths are relative to `notebooks/`, dataset lives in `data/`).
+
+Run the test suite for the preprocessing pipeline with:
+
+```bash
+python -m pytest tests/ -v
+```
 
 The dataset is the [Credit Risk Dataset](https://www.kaggle.com/datasets/laotse/credit-risk-dataset) from Kaggle.
