@@ -26,8 +26,16 @@ Binary classification project predicting loan default on 32,581 observations fro
 
 ![XGBoost confusion matrix and ROC curve](assets/xgboost_confusion_and_roc.png)
 
+**Is XGBoost's edge over Random Forest real, or just this particular test split?** A 1,000-resample bootstrap on the test set gives 95% confidence intervals of **[0.9425, 0.9563]** for XGBoost and **[0.9256, 0.9418]** for Random Forest: they don't overlap, so the gap is narrow but statistically real, not sampling noise.
+
+![Bootstrap confidence intervals on ROC-AUC](assets/bootstrap_ci.png)
+
+With defaults at only ~22% of the test set, ROC-AUC alone can be optimistic about minority-class performance. The Precision-Recall curves (summarized by Average Precision) confirm the same ranking focused specifically on the default class:
+
+![Precision-Recall curves](assets/precision_recall.png)
+
 **Key takeaways**
-- XGBoost wins on every metric, confirming a non-linear relationship between borrower features and default risk.
+- XGBoost wins on every metric (ROC-AUC, F2-score, Average Precision), confirming a non-linear relationship between borrower features and default risk, and its advantage over Random Forest holds up under bootstrap resampling.
 - Logistic regression stays a solid, natively interpretable baseline (~0.86 ROC-AUC), useful where explainability is a hard requirement.
 - The FN/FP cost ratio (~6.7) justifies optimizing for recall on the default class even at the expense of more false positives; F2-score captures this trade-off directly.
 - `loan_grade`, `person_home_ownership`, and `loan_percent_income` are consistently the strongest predictors across models.
@@ -69,6 +77,8 @@ The notebooks import their preprocessing steps from `src/preprocessing.py` rathe
 4. **Challengers**: Random Forest, XGBoost, and an MLP, compared on ROC-AUC and F2-score.
 5. **Threshold optimization**: the decision threshold is tuned to maximize F2-score rather than accuracy, reflecting the higher cost of a missed default vs. a false alarm.
 6. **Correlation & importance analysis**: feature correlation structure and per-model feature importance to sanity-check and explain the results.
+7. **Statistical robustness**: bootstrap confidence intervals on ROC-AUC and F2-score to check whether ranking differences between models are statistically meaningful.
+8. **Precision-Recall analysis**: PR curves and Average Precision, a metric less sensitive to class imbalance than ROC-AUC.
 
 ## Setup
 
