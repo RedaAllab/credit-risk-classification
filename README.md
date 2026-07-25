@@ -1,10 +1,14 @@
-# Credit Risk Modeling: Champion vs Challengers
+# Credit Risk Modeling — Champion vs Challengers
 
-Binary classification project predicting loan default on 32,581 observations. Compares a logistic regression champion against three challengers (Random Forest, XGBoost, MLP), with threshold optimization via F2-score to reflect the asymmetric cost structure of credit risk.
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange)
+![XGBoost](https://img.shields.io/badge/XGBoost-gradient%20boosting-green)
+![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey)
 
-**Course:** Data Science Software, M2 IRFA, Université Paris 1  
-**Supervisor:** Bertrand Hassani  
-**Authors:** Illian Hashatel, Reda Allab, Issa Ali Adoum
+Binary classification project predicting loan default on 32,581 observations from a real-world lending dataset. A logistic regression **champion** model is benchmarked against three **challengers** (Random Forest, XGBoost, MLP), with the decision threshold tuned via F2-score to reflect the asymmetric cost of missing a default.
+
+**Course:** Data Science Software, M2 IRFA, Université Paris 1 — **Supervisor:** Bertrand Hassani
+**Authors:** Illian Hashatel, [Reda Allab](https://github.com/RedaAllab), Issa Ali Adoum
 
 ---
 
@@ -14,17 +18,56 @@ Binary classification project predicting loan default on 32,581 observations. Co
 |---|---|---|---|
 | Logistic Regression (L1) | 0.857 | 0.708 | 0.578 |
 | Random Forest | 0.935 | 0.793 | 0.728 |
-| XGBoost | **0.950** | **0.826** | **0.783** |
+| **XGBoost** | **0.950** | **0.826** | **0.783** |
 | MLP | 0.906 | 0.744 | 0.729 |
 
+![Model comparison: F2-score and ROC-AUC](assets/model_comparison.png)
+
+![XGBoost confusion matrix and feature importance](assets/xgboost_confusion_and_importance.png)
+
+**Key takeaways**
+- XGBoost wins on every metric, confirming a non-linear relationship between borrower features and default risk.
+- Logistic regression stays a solid, natively interpretable baseline (~0.86 ROC-AUC) — useful where explainability is a hard requirement.
+- The FN/FP cost ratio (~6.7) justifies optimizing for recall on the default class even at the expense of more false positives; F2-score captures this trade-off directly.
+- `loan_grade`, `person_home_ownership`, and `loan_percent_income` are consistently the strongest predictors across models.
+- **Recommendation:** deploy XGBoost as the primary decision engine, paired with SHAP for explainability to satisfy GDPR Art. 22 / Basel III transparency requirements on internal credit models.
+
 ---
+
+## Repository structure
+
+```
+.
+├── notebooks/
+│   ├── credit_risk_eda.ipynb            # Exploratory data analysis
+│   └── credit_risk_modeling_en.ipynb     # Preprocessing, modeling, evaluation
+├── reports/
+│   └── dss_report_en.pdf                # Full written report
+├── data/
+│   └── credit_risk_dataset.csv          # Source dataset (Kaggle)
+├── assets/                              # Figures used in this README
+└── requirements.txt
+```
+
+---
+
+## Methodology
+
+1. **EDA** (`notebooks/credit_risk_eda.ipynb`) — distributions, missingness, outliers, target imbalance.
+2. **Preprocessing** — missingness indicators, categorical encoding, train/test split.
+3. **Champion model** — L1-regularized logistic regression, chosen for interpretability and its role as a scoring baseline.
+4. **Challengers** — Random Forest, XGBoost, and an MLP, compared on ROC-AUC and F2-score.
+5. **Threshold optimization** — the decision threshold is tuned to maximize F2-score rather than accuracy, reflecting the higher cost of a missed default vs. a false alarm.
+6. **Correlation & importance analysis** — feature correlation structure and per-model feature importance to sanity-check and explain the results.
 
 ## Setup
 
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn xgboost
+git clone https://github.com/RedaAllab/credit-risk-classification.git
+cd credit-risk-classification
+pip install -r requirements.txt
 ```
 
-Place `credit_risk_dataset.csv` in the same directory as the notebook and run `credit_risk_modeling_en.ipynb` top to bottom.
+Run `notebooks/credit_risk_eda.ipynb` and `notebooks/credit_risk_modeling_en.ipynb` top to bottom (paths are relative to `notebooks/`, dataset lives in `data/`).
 
 The dataset is the [Credit Risk Dataset](https://www.kaggle.com/datasets/laotse/credit-risk-dataset) from Kaggle.
