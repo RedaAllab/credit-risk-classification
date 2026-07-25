@@ -7,9 +7,10 @@
 
 Binary classification project predicting loan default on 32,581 observations from a real-world lending dataset. A logistic regression **champion** model is benchmarked against three **challengers** (Random Forest, XGBoost, MLP), with the decision threshold tuned via F2-score to reflect the asymmetric cost of missing a default.
 
+**Course project by:** Illian Hashatel, [Reda Allab](https://github.com/RedaAllab), Issa Ali Adoum
 **Course:** Data Science Software, M2 IRFA, Université Paris 1
 **Supervisor:** Bertrand Hassani
-**Authors:** Illian Hashatel, [Reda Allab](https://github.com/RedaAllab), Issa Ali Adoum
+**Engineering extensions by Reda Allab:** testing (pytest + CI), bootstrap confidence intervals, Information Value / VIF diagnostics, SHAP explainability, and the visualization system. See the [commit history](https://github.com/RedaAllab/credit-risk-classification/commits/main) for the full breakdown.
 
 ---
 
