@@ -9,7 +9,7 @@ import numpy as np
 from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay, fbeta_score
 
 
-def find_best_f2_threshold(y_true, y_probs, n_thresholds: int = 200):
+def find_best_f2_threshold(y_true, y_probs, n_thresholds: int = 200) -> tuple[float, float]:
     """Find the classification threshold that maximizes the F2-score."""
     thresholds = np.linspace(0.01, 0.99, n_thresholds)
     scores = [fbeta_score(y_true, (y_probs >= t).astype(int), beta=2) for t in thresholds]
@@ -17,7 +17,9 @@ def find_best_f2_threshold(y_true, y_probs, n_thresholds: int = 200):
     return thresholds[best_idx], scores[best_idx]
 
 
-def plot_confusion_and_roc(y_true, y_pred, y_proba, model_name: str, cmap="Blues", line_color=None):
+def plot_confusion_and_roc(
+    y_true, y_pred, y_proba, model_name: str, cmap="Blues", line_color: str | None = None
+) -> tuple[plt.Figure, np.ndarray]:
     """Side-by-side confusion matrix and ROC curve for one model."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
