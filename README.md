@@ -7,6 +7,8 @@
 
 Binary classification project predicting loan default on 32,581 observations from a real-world lending dataset. A logistic regression **champion** model is benchmarked against three **challengers** (Random Forest, XGBoost, MLP), with the decision threshold tuned via F2-score to reflect the asymmetric cost of missing a default.
 
+An interactive demo (see [Live demo](#live-demo) below) lets you fill in a loan application and get the XGBoost model's default probability, decision, and a per-applicant SHAP explanation.
+
 **Course:** Data Science Software, M2 IRFA, Université Paris 1
 **Supervisor:** Bertrand Hassani
 **Authors:** Illian Hashatel, [Reda Allab](https://github.com/RedaAllab), Issa Ali Adoum
@@ -67,6 +69,12 @@ XGBoost is the model we'd deploy, but as a boosted tree ensemble it isn't native
 ├── src/
 │   ├── preprocessing.py                 # Cleaning, encoding, train/test split logic
 │   └── evaluation.py                    # Threshold search and diagnostic plots shared across models
+├── scripts/
+│   └── train_final_model.py             # Trains and saves the champion model for the demo app
+├── app/
+│   └── streamlit_app.py                 # Interactive demo (see Live demo below)
+├── models/
+│   └── xgboost_final.joblib             # Saved champion model, used by the demo app
 ├── tests/
 │   ├── test_preprocessing.py            # Unit tests for src/preprocessing.py
 │   └── test_evaluation.py               # Unit tests for src/evaluation.py
@@ -94,6 +102,18 @@ The notebooks import their preprocessing steps from `src/preprocessing.py` rathe
 7. **Statistical robustness**: bootstrap confidence intervals on ROC-AUC and F2-score to check whether ranking differences between models are statistically meaningful.
 8. **Precision-Recall analysis**: PR curves and Average Precision, a metric less sensitive to class imbalance than ROC-AUC.
 9. **Explainability**: SHAP values for XGBoost, to attribute predictions to individual feature contributions.
+
+## Live demo
+
+`app/streamlit_app.py` is a small Streamlit app: fill in a loan application (age, income, loan amount, grade, etc.) and get the champion XGBoost model's default probability, its decision at the F2-optimized threshold, and a SHAP waterfall explaining that specific prediction.
+
+Run it locally:
+
+```bash
+pip install -r requirements.txt
+python scripts/train_final_model.py   # trains and saves models/xgboost_final.joblib once
+streamlit run app/streamlit_app.py
+```
 
 ## Setup
 
