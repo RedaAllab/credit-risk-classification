@@ -24,7 +24,7 @@ Binary classification project predicting loan default on 32,581 observations fro
 
 ![Model comparison: F2-score and ROC-AUC](assets/model_comparison.png)
 
-![XGBoost confusion matrix and feature importance](assets/xgboost_confusion_and_importance.png)
+![XGBoost confusion matrix and ROC curve](assets/xgboost_confusion_and_roc.png)
 
 **Key takeaways**
 - XGBoost wins on every metric, confirming a non-linear relationship between borrower features and default risk.
@@ -43,9 +43,11 @@ Binary classification project predicting loan default on 32,581 observations fro
 │   ├── credit_risk_eda.ipynb            # Exploratory data analysis
 │   └── credit_risk_modeling_en.ipynb     # Preprocessing, modeling, evaluation
 ├── src/
-│   └── preprocessing.py                 # Cleaning, encoding, train/test split logic
+│   ├── preprocessing.py                 # Cleaning, encoding, train/test split logic
+│   └── evaluation.py                    # Threshold search and diagnostic plots shared across models
 ├── tests/
-│   └── test_preprocessing.py            # Unit tests for src/preprocessing.py
+│   ├── test_preprocessing.py            # Unit tests for src/preprocessing.py
+│   └── test_evaluation.py               # Unit tests for src/evaluation.py
 ├── reports/
 │   └── dss_report_en.pdf                # Full written report
 ├── data/
