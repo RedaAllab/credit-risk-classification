@@ -9,9 +9,10 @@ Binary classification project predicting loan default on 32,581 observations fro
 
 An interactive demo (see [Live demo](#live-demo) below) lets you fill in a loan application and get the XGBoost model's default probability, decision, and a per-applicant SHAP explanation.
 
+**Course project by:** Illian Hashatel, [Reda Allab](https://github.com/RedaAllab), Issa Ali Adoum
 **Course:** Data Science Software, M2 IRFA, Université Paris 1
 **Supervisor:** Bertrand Hassani
-**Authors:** Illian Hashatel, [Reda Allab](https://github.com/RedaAllab), Issa Ali Adoum
+**Engineering extensions by Reda Allab:** testing (pytest + CI), bootstrap confidence intervals, Information Value / VIF diagnostics, SHAP explainability, and the visualization system. See the [commit history](https://github.com/RedaAllab/credit-risk-classification/commits/main) for the full breakdown.
 
 ---
 
