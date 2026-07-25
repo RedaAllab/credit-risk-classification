@@ -80,7 +80,7 @@ Run `notebooks/credit_risk_eda.ipynb` and `notebooks/credit_risk_modeling_en.ipy
 Run the test suite for the preprocessing pipeline with:
 
 ```bash
-pytest tests/ -v
+python -m pytest tests/ -v
 ```
 
 The dataset is the [Credit Risk Dataset](https://www.kaggle.com/datasets/laotse/credit-risk-dataset) from Kaggle.
