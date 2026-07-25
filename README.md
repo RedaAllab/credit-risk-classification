@@ -1,4 +1,4 @@
-# Credit Risk Modeling — Champion vs Challengers
+# Credit Risk Modeling: Champion vs Challengers
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange)
@@ -7,7 +7,8 @@
 
 Binary classification project predicting loan default on 32,581 observations from a real-world lending dataset. A logistic regression **champion** model is benchmarked against three **challengers** (Random Forest, XGBoost, MLP), with the decision threshold tuned via F2-score to reflect the asymmetric cost of missing a default.
 
-**Course:** Data Science Software, M2 IRFA, Université Paris 1 — **Supervisor:** Bertrand Hassani
+**Course:** Data Science Software, M2 IRFA, Université Paris 1
+**Supervisor:** Bertrand Hassani
 **Authors:** Illian Hashatel, [Reda Allab](https://github.com/RedaAllab), Issa Ali Adoum
 
 ---
@@ -27,7 +28,7 @@ Binary classification project predicting loan default on 32,581 observations fro
 
 **Key takeaways**
 - XGBoost wins on every metric, confirming a non-linear relationship between borrower features and default risk.
-- Logistic regression stays a solid, natively interpretable baseline (~0.86 ROC-AUC) — useful where explainability is a hard requirement.
+- Logistic regression stays a solid, natively interpretable baseline (~0.86 ROC-AUC), useful where explainability is a hard requirement.
 - The FN/FP cost ratio (~6.7) justifies optimizing for recall on the default class even at the expense of more false positives; F2-score captures this trade-off directly.
 - `loan_grade`, `person_home_ownership`, and `loan_percent_income` are consistently the strongest predictors across models.
 - **Recommendation:** deploy XGBoost as the primary decision engine, paired with SHAP for explainability to satisfy GDPR Art. 22 / Basel III transparency requirements on internal credit models.
@@ -60,12 +61,12 @@ The notebooks import their preprocessing steps from `src/preprocessing.py` rathe
 
 ## Methodology
 
-1. **EDA** (`notebooks/credit_risk_eda.ipynb`) — distributions, missingness, outliers, target imbalance.
-2. **Preprocessing** — missingness indicators, categorical encoding, train/test split.
-3. **Champion model** — L1-regularized logistic regression, chosen for interpretability and its role as a scoring baseline.
-4. **Challengers** — Random Forest, XGBoost, and an MLP, compared on ROC-AUC and F2-score.
-5. **Threshold optimization** — the decision threshold is tuned to maximize F2-score rather than accuracy, reflecting the higher cost of a missed default vs. a false alarm.
-6. **Correlation & importance analysis** — feature correlation structure and per-model feature importance to sanity-check and explain the results.
+1. **EDA** (`notebooks/credit_risk_eda.ipynb`): distributions, missingness, outliers, target imbalance.
+2. **Preprocessing**: missingness indicators, categorical encoding, train/test split.
+3. **Champion model**: L1-regularized logistic regression, chosen for interpretability and its role as a scoring baseline.
+4. **Challengers**: Random Forest, XGBoost, and an MLP, compared on ROC-AUC and F2-score.
+5. **Threshold optimization**: the decision threshold is tuned to maximize F2-score rather than accuracy, reflecting the higher cost of a missed default vs. a false alarm.
+6. **Correlation & importance analysis**: feature correlation structure and per-model feature importance to sanity-check and explain the results.
 
 ## Setup
 
