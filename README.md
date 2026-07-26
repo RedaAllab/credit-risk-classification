@@ -76,7 +76,7 @@ XGBoost is the model we'd deploy, but as a boosted tree ensemble it isn't native
 ├── app/
 │   └── streamlit_app.py                 # Interactive demo (see Live demo below)
 ├── models/
-│   └── xgboost_final.joblib             # Saved champion model, used by the demo app
+│   └── all_models.joblib                # All 4 trained models, used by the demo app
 ├── tests/
 │   ├── test_preprocessing.py            # Unit tests for src/preprocessing.py
 │   └── test_evaluation.py               # Unit tests for src/evaluation.py
@@ -109,13 +109,13 @@ The notebooks import their preprocessing steps from `src/preprocessing.py` rathe
 
 **[credit-risk-classification-fprbidokieelrpbgryxzvz.streamlit.app](https://credit-risk-classification-fprbidokieelrpbgryxzvz.streamlit.app/)**
 
-`app/streamlit_app.py` is a small Streamlit app: fill in a loan application (age, income, loan amount, grade, etc.) and get the champion XGBoost model's default probability, its decision at the F2-optimized threshold, and a SHAP waterfall explaining that specific prediction.
+`app/streamlit_app.py` is a small Streamlit app: fill in a loan application (age, income, loan amount, grade, etc.), or click one of the low-risk / high-risk example profiles, and get the champion XGBoost model's default probability, its decision at the F2-optimized threshold, a SHAP waterfall explaining that specific prediction, and how the 3 challenger models would have scored the same applicant.
 
 Run it locally:
 
 ```bash
 pip install -r requirements.txt
-python scripts/train_final_model.py   # trains and saves models/xgboost_final.joblib once
+python scripts/train_final_model.py   # trains and saves models/all_models.joblib once
 streamlit run app/streamlit_app.py
 ```
 
