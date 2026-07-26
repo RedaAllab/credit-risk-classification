@@ -10,6 +10,14 @@ Binary classification project predicting loan default on 32,581 observations fro
 
 **[Try the live demo](https://credit-risk-classification-fprbidokieelrpbgryxzvz.streamlit.app/)**: fill in a loan application and get the XGBoost model's default probability, decision, and a per-applicant SHAP explanation.
 
+![Demo preview: decision and SHAP explanation](assets/streamlit_demo_preview.png)
+
+**TL;DR**
+- Benchmarked 4 models end to end (Logistic L1, Random Forest, XGBoost, MLP) with statistical significance testing, bootstrap confidence intervals, and SHAP explainability, not just a single accuracy number.
+- XGBoost wins on every metric (ROC-AUC 0.950, F2 0.820), and its edge over Random Forest holds up under bootstrap resampling rather than being a one-off test-split artifact.
+- That edge translates to catching an estimated ~5.5 more defaults per 1,000 applications than the next-best challenger, worth roughly $59K in avoided losses per 1,000 applications (see Results for the full calculation and its assumptions).
+- Shipped as an interactive Streamlit demo with per-applicant SHAP explanations, not just static notebook plots.
+
 **Course project by:** Illian Hashatel, [Reda Allab](https://github.com/RedaAllab), Issa Ali Adoum
 **Course:** Data Science Software, M2 IRFA, Université Paris 1
 **Supervisor:** Bertrand Hassani
@@ -51,6 +59,8 @@ With defaults at only ~22% of the test set, ROC-AUC alone can be optimistic abou
 XGBoost is the model we'd deploy, but as a boosted tree ensemble it isn't natively interpretable. SHAP values attribute each prediction to individual feature contributions, showing not just which features matter but in which direction:
 
 ![SHAP summary for XGBoost](assets/shap_summary.png)
+
+**What does XGBoost's recall edge mean in dollar terms?** XGBoost's default recall (0.727) beats Random Forest's (0.702) by 2.5 points. At this dataset's ~22% default rate, that's roughly **5.5 additional defaults caught per 1,000 applications**. At the average defaulted-loan amount in this dataset (**$10,851**), and assuming a simplified 100% loss given default, that puts XGBoost's edge over Random Forest at approximately **$59,000 in avoided losses per 1,000 applications**. The 100% LGD assumption is a deliberately conservative upper bound for illustration, not a real-world loss estimate: actual credit losses are partially recovered through collections, collateral, or settlements (see Limitations).
 
 **Key takeaways**
 - XGBoost wins on every metric (ROC-AUC, F2-score, Average Precision), confirming a non-linear relationship between borrower features and default risk, and its advantage over Random Forest holds up under bootstrap resampling.
@@ -104,6 +114,14 @@ The notebooks import their preprocessing steps from `src/preprocessing.py` rathe
 7. **Statistical robustness**: bootstrap confidence intervals on ROC-AUC and F2-score to check whether ranking differences between models are statistically meaningful.
 8. **Precision-Recall analysis**: PR curves and Average Precision, a metric less sensitive to class imbalance than ROC-AUC.
 9. **Explainability**: SHAP values for XGBoost, to attribute predictions to individual feature contributions.
+
+## Limitations
+
+This project validates the model on a single held-out split of one static dataset, not a live portfolio. A few gaps would need addressing before any real deployment:
+- **No temporal validation**: the train/test split is random, not chronological. Credit risk drifts with macroeconomic conditions, so a true out-of-time split (train on year N, test on year N+1) would give a more realistic estimate of live performance than a random split does.
+- **No drift monitoring plan**: a production system would need scheduled recalibration checks and feature-drift monitoring (e.g., Population Stability Index) to catch when the model's assumptions stop holding.
+- **Single dataset, single source**: no validation against a second lending dataset or institution, so generalization outside this specific population is untested.
+- **The $ impact estimate above is illustrative, not a real loss estimate**: it assumes 100% loss given default for simplicity; real credit losses are partially recovered through collections, collateral, or settlements.
 
 ## Live demo
 
