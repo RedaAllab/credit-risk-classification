@@ -24,12 +24,13 @@ CATEGORICAL = [BLUE, GREEN, MAGENTA, YELLOW, AQUA, ORANGE, VIOLET, RED]
 TARGET_COLORS = {0: BLUE, 1: RED}
 TARGET_LABELS = {0: "Non-default", 1: "Default"}
 
-# Four-model comparison: fixed hue order, one color per model throughout.
+# Model comparison: fixed hue order, one color per model throughout.
 MODEL_COLORS = {
     "Logistic (L1)": BLUE,
     "Random Forest": GREEN,
     "XGBoost": ORANGE,
     "MLP": VIOLET,
+    "AutoML (FLAML)": AQUA,
 }
 
 # Chart chrome

@@ -1,6 +1,6 @@
 """Interactive demo for the credit risk model: fill in a loan application,
 get the champion XGBoost model's default probability, decision, and a
-per-applicant SHAP explanation, plus how the 3 challenger models would have
+per-applicant SHAP explanation, plus how the 4 challenger models would have
 scored the same applicant.
 
 Run locally with: streamlit run app/streamlit_app.py
@@ -28,12 +28,16 @@ LOAN_INTENT_OPTIONS = [
 ]
 
 # Validated notebook results (see README "Results" table), shown for context
-# in the sidebar rather than recomputed at runtime.
+# in the sidebar rather than recomputed at runtime. AutoML (FLAML) is the
+# exception: it isn't in the notebook, so its numbers come from the test-set
+# evaluation printed by scripts/train_automl.py instead - re-run that script
+# and update this row if the model is retrained.
 MODEL_METRICS = {
     "Logistic Regression (L1)": {"ROC-AUC": 0.857, "F2": 0.709, "Recall": 0.577},
     "Random Forest": {"ROC-AUC": 0.934, "F2": 0.790, "Recall": 0.702},
     "XGBoost": {"ROC-AUC": 0.950, "F2": 0.820, "Recall": 0.727},
     "MLP": {"ROC-AUC": 0.906, "F2": 0.744, "Recall": 0.729},
+    "AutoML (FLAML)": {"ROC-AUC": 0.947, "F2": 0.820, "Recall": 0.848},
 }
 
 DEFAULT_PROFILE = {
@@ -123,7 +127,7 @@ def render_sidebar():
 
 def render_model_comparison(models: dict, X_row: pd.DataFrame):
     st.subheader("Champion vs. challengers")
-    st.caption("Predicted default probability from all 4 models for this applicant.")
+    st.caption("Predicted default probability from all 5 models for this applicant.")
 
     names = [name for name in MODEL_COLORS if name in models]
     probs = [models[name]["model"].predict_proba(X_row)[0, 1] for name in names]
@@ -148,7 +152,7 @@ def main():
     st.markdown(
         "Fill in a loan application below to get the champion **XGBoost** model's "
         "default probability, decision, and a per-applicant SHAP explanation, "
-        "then compare it against the 3 challenger models. "
+        "then compare it against the 4 challenger models. "
         "See the [full analysis](https://github.com/RedaAllab/credit-risk-classification) "
         "for the model comparison, statistical validation, and explainability behind this."
     )
