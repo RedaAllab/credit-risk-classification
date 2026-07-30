@@ -82,21 +82,25 @@ XGBoost is the model we'd deploy, but as a boosted tree ensemble it isn't native
 │   ├── preprocessing.py                 # Cleaning, encoding, train/test split logic
 │   └── evaluation.py                    # Threshold search and diagnostic plots shared across models
 ├── scripts/
-│   └── train_final_model.py             # Trains and saves the champion model for the demo app
+│   ├── train_final_model.py             # Trains and saves the champion model for the demo app
+│   ├── train_automl.py                  # Trains a FLAML AutoML challenger (see AutoML challenger below)
+│   └── merge_automl_challenger.py       # Folds the AutoML challenger into models/all_models.joblib
 ├── app/
 │   └── streamlit_app.py                 # Interactive demo (see Live demo below)
 ├── models/
-│   └── all_models.joblib                # All 4 trained models, used by the demo app
+│   └── all_models.joblib                # All 5 trained models, used by the demo app
 ├── tests/
 │   ├── test_preprocessing.py            # Unit tests for src/preprocessing.py
-│   └── test_evaluation.py               # Unit tests for src/evaluation.py
+│   ├── test_evaluation.py               # Unit tests for src/evaluation.py
+│   └── test_automl.py                   # Smoke test for scripts/train_automl.py
 ├── reports/
 │   └── dss_report_en.pdf                # Full written report
 ├── data/
 │   └── credit_risk_dataset.csv          # Source dataset (Kaggle)
 ├── assets/                              # Figures used in this README
 ├── .github/workflows/ci.yml             # Runs the test suite on every push/PR
-└── requirements.txt
+├── requirements.txt
+└── requirements-automl.txt              # Separate environment for scripts/train_automl.py (see below)
 ```
 
 The notebooks import their preprocessing steps from `src/preprocessing.py` rather than duplicating the logic inline, so the cleaning/encoding pipeline is unit-tested (`pytest tests/`) and reusable outside the notebook.
@@ -127,7 +131,7 @@ This project validates the model on a single held-out split of one static datase
 
 **[credit-risk-classification-fprbidokieelrpbgryxzvz.streamlit.app](https://credit-risk-classification-fprbidokieelrpbgryxzvz.streamlit.app/)**
 
-`app/streamlit_app.py` is a small Streamlit app: fill in a loan application (age, income, loan amount, grade, etc.), or click one of the low-risk / high-risk example profiles, and get the champion XGBoost model's default probability, its decision at the F2-optimized threshold, a SHAP waterfall explaining that specific prediction, and how the 3 challenger models would have scored the same applicant.
+`app/streamlit_app.py` is a small Streamlit app: fill in a loan application (age, income, loan amount, grade, etc.), or click one of the low-risk / high-risk example profiles, and get the champion XGBoost model's default probability, its decision at the F2-optimized threshold, a SHAP waterfall explaining that specific prediction, and how the 4 challenger models (including the AutoML challenger below) would have scored the same applicant.
 
 Run it locally:
 
@@ -135,6 +139,22 @@ Run it locally:
 pip install -r requirements.txt
 python scripts/train_final_model.py   # trains and saves models/all_models.joblib once
 streamlit run app/streamlit_app.py
+```
+
+### AutoML challenger
+
+`scripts/train_automl.py` adds a fifth model to the comparison: a [FLAML](https://microsoft.github.io/FLAML/) AutoML search over LightGBM, Random Forest, Extra Trees, and L1-regularized logistic regression, replacing this project's manual GridSearchCV with a time-budgeted search. It's excluded from the "Results" table above since it isn't part of the graded coursework, but it does appear in the live demo's champion-vs-challengers comparison as **AutoML (FLAML)** (test set: ROC-AUC 0.947, F2 0.820, recall 0.848 - on par with XGBoost's F2 and ROC-AUC, at meaningfully higher recall).
+
+It runs in its own environment (`requirements-automl.txt`), separate from `requirements.txt`: `flaml[automl]` pins `xgboost<3.0`, which conflicts with this project's `xgboost==3.2.0`, so XGBoost is excluded from FLAML's search space and the two environments are never installed together.
+
+```bash
+python -m venv .venv-automl && source .venv-automl/bin/activate
+pip install -r requirements-automl.txt
+python scripts/train_automl.py --time-budget 300      # saves models/automl_challenger.joblib
+deactivate
+
+source .venv/bin/activate                              # back in the main requirements.txt environment
+python scripts/merge_automl_challenger.py               # folds it into models/all_models.joblib
 ```
 
 ## Setup

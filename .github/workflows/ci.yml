@@ -16,3 +16,15 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: python -m pytest tests/ -v
+
+  test-automl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Separate environment: flaml[automl] pins xgboost<3.0, which conflicts
+      # with requirements.txt's xgboost==3.2.0 (see requirements-automl.txt).
+      - run: pip install -r requirements-automl.txt pytest
+      - run: python -m pytest tests/test_automl.py -v
