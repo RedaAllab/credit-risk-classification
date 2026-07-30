@@ -37,7 +37,7 @@ MODEL_METRICS = {
     "Random Forest": {"ROC-AUC": 0.934, "F2": 0.790, "Recall": 0.702},
     "XGBoost": {"ROC-AUC": 0.950, "F2": 0.820, "Recall": 0.727},
     "MLP": {"ROC-AUC": 0.906, "F2": 0.744, "Recall": 0.729},
-    "AutoML (FLAML)": {"ROC-AUC": 0.947, "F2": 0.820, "Recall": 0.848},
+    "AutoML (FLAML)": {"ROC-AUC": 0.946, "F2": 0.816, "Recall": 0.877},
 }
 
 DEFAULT_PROFILE = {
